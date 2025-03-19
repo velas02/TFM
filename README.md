@@ -1,6 +1,6 @@
 # Análisis de Factores de Riesgo en la Inversión en Startups Tecnológicas
 
-Este repositorio contiene el código y documentación relacionados con el Trabajo de Fin de Máster titulado **"Análisis de Factores de Riesgo en la Inversión en Startups Tecnológicas"**. El objetivo principal del proyecto es desarrollar un sistema de software con una interfaz de usuario y un backend que implemente un modelo de aprendizaje automático explicable, sin uso de deep learning. 
+Este repositorio contiene el código y documentación relacionados con el Trabajo de Fin de Máster titulado **"Análisis de Factores de Riesgo en la Inversión en Startups Tecnológicas"**. El objetivo principal del proyecto es desarrollar un sistema de software con una interfaz de usuario y un backend que implemente uno o varios modelos de aprendizaje automático explicables, sin uso de deep learning. 
 
 ## Estructura del repositorio
 
