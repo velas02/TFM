@@ -13,7 +13,7 @@ La rama principal del repositorio. Contiene el código estable e integrado de la
 Rama dedicada al desarrollo de la interfaz de usuario en **.NET Framework con C#**. Aquí se desarrollarán las funcionalidades de visualización de datos y la interacción con el backend.
 
 ### 3. `Machine-Learning-Models`
-Rama enfocada en el desarrollo del modelo de **Machine Learning explicable** utilizando **Scikit-learn**. En esta rama se implementarán las técnicas de explicabilidad como **LIME** y **SHAP**, así como el preprocesamiento de datos y la validación del modelo.
+Rama enfocada en el desarrollo del modelo o modelos de **Machine Learning explicables** utilizando **Scikit-learn**. En esta rama se implementarán las técnicas de explicabilidad como **LIME** y **SHAP**, así como el preprocesamiento de datos y la validación del modelo.
 
 ### 4. `Flask`
 Rama dedicada al desarrollo del backend en **Flask con Python**. Aquí se manejarán las API necesarias para la comunicación entre la interfaz de usuario y el modelo de aprendizaje automático.
@@ -40,6 +40,3 @@ Las contribuciones deberán seguir el siguiente flujo:
 
 ## Contacto
 Para cualquier duda o sugerencia, puedes contactar a través del correo **David_Velasco@usal.es**.
-
----
-Este README proporciona una guía clara sobre la organización del proyecto y facilita la colaboración en el desarrollo del TFM.
