@@ -12,8 +12,8 @@ La rama principal del repositorio. Contiene el código estable e integrado de la
 ### 2. `C#`
 Rama dedicada al desarrollo de la interfaz de usuario en **.NET Framework con C#**. Aquí se desarrollarán las funcionalidades de visualización de datos y la interacción con el backend.
 
-### 3. `Machine-Learning-Models`
-Rama enfocada en el desarrollo del modelo o modelos de **Machine Learning explicables** utilizando **Scikit-learn**. En esta rama se implementarán las técnicas de explicabilidad como **LIME** y **SHAP**, así como el preprocesamiento de datos y la validación del modelo.
+### 3. Machine-Learning-Models  
+Rama enfocada en el desarrollo del modelo o modelos de **Machine Learning explicables**, tanto tradicionales como de **Deep Learning**, utilizando **Scikit-learn** y frameworks como **Keras** o **TensorFlow**. En esta rama se implementarán las técnicas de explicabilidad como **LIME** y **SHAP**, así como el preprocesamiento de datos, la validación del modelo y la comparación de su rendimiento.
 
 ### 4. `Flask`
 Rama dedicada al desarrollo del backend en **Flask con Python**. Aquí se manejarán las API necesarias para la comunicación entre la interfaz de usuario y el modelo de aprendizaje automático.
