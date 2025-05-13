@@ -19,6 +19,7 @@ namespace TFMUI
         public MainWindow()
         {
             InitializeComponent();
+            PrintDialog("Hello, World!");   
         }
     }
 }
