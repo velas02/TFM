@@ -19,7 +19,8 @@ namespace TFMUI
         public MainWindow()
         {
             InitializeComponent();
-            PrintDialog("Hello, World!");   
+            var pd = new System.Windows.Controls.PrintDialog();
+            pd.ShowDialog();
         }
     }
 }
