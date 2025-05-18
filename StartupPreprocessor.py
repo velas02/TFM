@@ -22,9 +22,7 @@ class StartupPreprocessor:
             'closed_at', 'first_funding_at',
             'last_funding_at', 'milestones',
             'has_roundA', 'has_roundB',
-            'has_roundC', 'has_roundD',
-            'funding_total_usd', 'relationships',
-            'avg_participants'
+            'has_roundC', 'has_roundD'
         ]
         self._extra_drop = [
             'age_first_funding_year','age_last_funding_year',
