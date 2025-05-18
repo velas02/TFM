@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -6,8 +9,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 
 namespace TFMUI
 {
@@ -133,11 +134,12 @@ namespace TFMUI
             }
 
             var result = await EnviarCsvYObtenerPrediccionAsync(
-                              _csvFilePath, 
+                              _csvFilePath,
                               "http://localhost:5000/predict_svm");
 
             var popup = new PredictionPopup(
-                result.prediction, 
+                "svm",
+                result.prediction,
                 result.probability);
             popup.Owner = this;
             popup.ShowDialog();
@@ -155,11 +157,16 @@ namespace TFMUI
                 return;
             }
 
-            var result = await EnviarCsvYObtenerPrediccionAsync(_csvFilePath, "http://localhost:5000/predict_mlp");
-            MessageBox.Show($"predicción: {result.prediction}\nprobabilidad: {result.probability:F2}",
-                            "resultado MLP",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+            var result = await EnviarCsvYObtenerPrediccionAsync(_csvFilePath,
+                                      "http://localhost:5000/predict_mlp");
+
+            // usa el mismo popup que para SVM
+            var popup = new PredictionPopup(
+                "mlp",
+                result.prediction,
+                result.probability);
+            popup.Owner = this;
+            popup.ShowDialog();
         }
 
         private async void ShapSvm_Click(object sender, RoutedEventArgs e)
@@ -173,13 +180,18 @@ namespace TFMUI
                 return;
             }
 
-            var shap = await EnviarCsvYObtenerShapAsync(_csvFilePath, "http://localhost:5000/explain_svm");
-            var detalles = string.Join("\n", shap.Select(kv => $"{kv.Key}: {kv.Value:F3}"));
-            MessageBox.Show(detalles,
-                            "valores SHAP SVM",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+            var (expected, shapSum, predicted, shapDict) =
+                await EnviarCsvYObtenerShapAsync(_csvFilePath,
+                                                "http://localhost:5000/explain_svm");
+
+            var popup = new ShapPopup(expected,
+                                      shapSum,
+                                      predicted,
+                                      shapDict);
+            popup.Owner = this;
+            popup.ShowDialog();
         }
+
 
         private async void ShapMlp_Click(object sender, RoutedEventArgs e)
         {
@@ -192,12 +204,18 @@ namespace TFMUI
                 return;
             }
 
-            var shap = await EnviarCsvYObtenerShapAsync(_csvFilePath, "http://localhost:5000/explain_mlp");
-            var detalles = string.Join("\n", shap.Select(kv => $"{kv.Key}: {kv.Value:F3}"));
-            MessageBox.Show(detalles,
-                            "valores SHAP MLP",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+            var (expected, shapSum, predicted, shapValues) =
+                await EnviarCsvYObtenerShapAsync(_csvFilePath,
+                                                "http://localhost:5000/explain_mlp");
+
+            // usa el mismo popup que para SVM
+            var popup = new ShapPopup(
+                expected,
+                shapSum,
+                predicted,
+                shapValues);
+            popup.Owner = this;
+            popup.ShowDialog();
         }
 
         private async Task<PredictionResult> EnviarCsvYObtenerPrediccionAsync(string filePath, string url)
@@ -216,7 +234,8 @@ namespace TFMUI
                    ?? throw new InvalidOperationException("respuesta nula");
         }
 
-        private async Task<Dictionary<string, double>> EnviarCsvYObtenerShapAsync(string filePath, string url)
+        private async Task<(double expected, double shapSum, double predicted, Dictionary<string, double> shapValues)>
+            EnviarCsvYObtenerShapAsync(string filePath, string url)
         {
             using var client = new HttpClient();
             using var stream = File.OpenRead(filePath);
@@ -228,8 +247,23 @@ namespace TFMUI
             var resp = await client.PostAsync(url, form);
             resp.EnsureSuccessStatusCode();
             var text = await resp.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Dictionary<string, double>>(text)
-                   ?? new Dictionary<string, double>();
+
+            // parseamos el JSON completo
+            var obj = JObject.Parse(text);
+
+            // extraemos los valores escalares
+            double expected = obj["expected_value"].Value<double>();
+            double shapSum = obj["shap_sum"].Value<double>();
+            double predicted = obj["predicted_probability"].Value<double>();
+
+            // extraemos el diccionario de contribuciones
+            var shapValues = obj["shap_values"]
+                                .ToObject<Dictionary<string, double>>()
+                            ?? new Dictionary<string, double>();
+
+            return (expected, shapSum, predicted, shapValues);
         }
+
+
     }
 }

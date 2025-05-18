@@ -1,0 +1,35 @@
+﻿<!-- ShapPopup.xaml -->
+<Window x:Class="TFMUI.ShapPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        Title="SHAP"
+        Height="600"
+        Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <!-- fila del gráfico -->
+            <RowDefinition Height="*"/>
+            <!-- fila del pie de página (resumen) -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- gráfico de barras horizontales -->
+        <lvc:CartesianChart x:Name="ChartShap"
+                            Grid.Row="0"
+                            Series="{Binding Series}"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}"
+                            TooltipPosition="Hidden"
+                            Margin="0"/>
+
+        <!-- pie de página: resumen -->
+        <TextBlock x:Name="TxtResumen"
+                   Grid.Row="1"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   TextWrapping="Wrap"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"/>
+    </Grid>
+</Window>

@@ -7,23 +7,32 @@ namespace TFMUI
 {
     public partial class PredictionPopup : Window
     {
-        public PredictionPopup(int prediction, double probability)
+        /// <summary>
+        /// Constructor del popup de predicción.
+        /// </summary>
+        /// <param name="modelType">"svm" o "mlp" (sin distinción de mayúsculas).</param>
+        /// <param name="prediction">0 o 1, etiqueta predicha.</param>
+        /// <param name="probability">probabilidad asociada a la clase 1.</param>
+        public PredictionPopup(string modelType, int prediction, double probability)
         {
             InitializeComponent();
 
-            // si clase éxito
+            // asignar título dinámico
+            TitleText.Text = $"Predicción ({modelType.ToUpper()})";
+
+            // seleccionar icono y mensaje según la etiqueta
             if (prediction == 1)
             {
                 Icon.Source = new BitmapImage(
-                    new Uri("C:\\Users\\David\\Desktop\\TFM\\TFMUI\\Resources\\success.png"));
+                    new Uri("C:\\Users\\David\\Desktop\\TFMUI\\Resources\\success.png"));
                 MessageText.Text = "La startup es un éxito";
                 ConfidenceText.Text =
                     $"Confianza: {(int)(probability * 100)} %";
             }
-            else // clase fracaso
+            else
             {
                 Icon.Source = new BitmapImage(
-                    new Uri("C:\\Users\\David\\Desktop\\TFM\\TFMUI\\Resources\\failure.png"));
+                    new Uri("C:\\Users\\David\\Desktop\\TFMUI\\Resources\\failure.png"));
                 MessageText.Text = "La startup es un fracaso";
                 ConfidenceText.Text =
                     $"Confianza: {100 - (int)(probability * 100)} %";
@@ -39,6 +48,5 @@ namespace TFMUI
         {
             DragMove();
         }
-
     }
 }
